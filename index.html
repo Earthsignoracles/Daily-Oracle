@@ -4,31 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarthSign Oracles | Daily Guidance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #D4AF37; --dark: #050B1A; }
         body { background-color: #050B1A; color: #E0E0E0; font-family: 'Lora', serif; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 40px 20px; text-align: center; min-height: 100vh; }
         
-        /* Typography */
         h1 { font-family: 'Cinzel', serif; color: var(--gold); letter-spacing: 4px; margin-top: 20px; text-transform: uppercase; }
-        .slogan { font-style: italic; color: #C5A059; margin-bottom: 40px; font-size: 0.9em; letter-spacing: 1px; }
         
-        /* Card Container */
-        #card-container { width: 300px; height: 533px; perspective: 1000px; cursor: pointer; margin-bottom: 30px; position: relative; }
+        .instruction { font-style: italic; color: #C5A059; margin-bottom: 30px; font-size: 0.95em; line-height: 1.6; max-width: 500px; letter-spacing: 0.5px; }
+        
+        #card-container { width: 300px; height: 533px; perspective: 1000px; margin-bottom: 30px; position: relative; }
         #card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         #card.flipped { transform: rotateY(180deg); }
         .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); background-size: cover; background-position: center; }
         .card-back { background-image: url('back.jpg'); }
         .card-front { transform: rotateY(180deg); background-image: url(''); }
 
-        /* Interaction Elements */
-        #msg { margin-top: 20px; min-height: 1.5em; color: var(--gold); font-size: 1.1em; }
-        .btn { margin-top: 20px; padding: 15px 30px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85em; }
+        .btn { margin-top: 10px; padding: 15px 30px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85em; }
         .btn:hover { background: var(--gold); color: var(--dark); }
         
-        /* About Section */
+        #draw-btn { margin-top: 20px; }
+        
         .about-section { max-width: 600px; margin-top: 60px; line-height: 1.8; color: #AAA; font-size: 0.85em; border-top: 1px solid #222; padding-top: 40px; }
-        .about-section h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 15px; }
+        
+        .social-links { margin-top: 30px; display: flex; gap: 25px; align-items: center; justify-content: center; }
+        .social-links a { color: white; font-size: 1.5em; transition: 0.3s; text-decoration: none; }
+        .social-links a:hover { color: var(--gold); transform: translateY(-3px); }
+        .payhip-icon { font-weight: bold; font-family: 'Cinzel', serif; font-size: 0.85em !important; border: 1.5px solid white; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; }
+        .payhip-icon:hover { border-color: var(--gold); }
+
         .reset-link { color: #666; font-size: 0.75em; text-decoration: none; margin-top: 25px; display: block; letter-spacing: 2px; text-transform: uppercase; }
         .reset-link:hover { color: var(--gold); }
     </style>
@@ -36,39 +41,43 @@
 <body>
 
     <h1>EarthSign Oracles</h1>
-    <div class="slogan">Connecting Soul to Soil</div>
+    <div class="instruction">Close your eyes... take a deep grounding breath, and focus on your question. When you feel a connection, draw the card that calls to your soul.</div>
 
-    <div id="card-container" onclick="drawCard()">
+    <div id="card-container">
         <div id="card">
             <div class="card-face card-back"></div>
             <div class="card-face card-front" id="cardFront"></div>
         </div>
     </div>
 
-    <p id="msg">Close your eyes, take a deep breath, and tap the card.</p>
+    <button id="draw-btn" class="btn" onclick="drawCard()">Receive My Daily Message</button>
     
     <div id="action-area" style="display:none;">
-        <a href="https://payhip.com/EarthSignOracles" target="_blank" class="btn">Download High-Res Wallpaper</a><br>
+        <p style="color:var(--gold); font-size: 1.1em;">The Universe has spoken.</p>
+        <a href="https://payhip.com/EarthSignOracles" target="_blank" class="btn">Explore The Collection</a><br>
         <a href="#" onclick="location.reload()" class="reset-link">✦ Draw Again ✦</a>
     </div>
 
     <div class="about-section">
-        <h3>The Ritual</h3>
-        <p>EarthSign Oracles is a sanctuary where ancient nature wisdom meets cosmic guidance. Every animal that appears is a reflection of your current energy. If this message resonates, feel free to carry its essence by downloading it as your digital companion.</p>
+        <p>EarthSign Oracles is a sanctuary where ancient nature wisdom meets cosmic guidance. Every animal that appears is a reflection of your current energy.</p>
+        
+        <div class="social-links">
+            <a href="https://www.instagram.com/eathsign.oracles/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.threads.net/@eathsign.oracles" target="_blank" title="Threads"><i class="fab fa-threads"></i></a>
+            <a href="https://payhip.com/EarthSignOracles" target="_blank" title="Shop" class="payhip-icon">SHOP</a>
+        </div>
     </div>
 
     <script>
         function drawCard() {
             const card = document.getElementById('card');
+            const drawBtn = document.getElementById('draw-btn');
+            
             if (!card.classList.contains('flipped')) {
-                // Randomly select card1.jpg to card32.jpg
                 const num = Math.floor(Math.random() * 32) + 1;
-                const resultCard = `card${num}.jpg`;
-                
-                document.getElementById('cardFront').style.backgroundImage = `url('${resultCard}')`;
+                document.getElementById('cardFront').style.backgroundImage = `url('card${num}.jpg')`;
                 card.classList.add('flipped');
-                
-                document.getElementById('msg').innerText = "The Universe has spoken.";
+                drawBtn.style.display = 'none';
                 document.getElementById('action-area').style.display = 'block';
             }
         }
