@@ -3,83 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarthSign Oracles | Daily Guidance</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+    <title>EarthSign.Oracles | Sacred Daily Guidance</title>
     <style>
-        :root { --gold: #D4AF37; --dark: #050B1A; }
-        body { background-color: #050B1A; color: #E0E0E0; font-family: 'Lora', serif; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 40px 20px; text-align: center; min-height: 100vh; }
-        
-        h1 { font-family: 'Cinzel', serif; color: var(--gold); letter-spacing: 4px; margin-top: 20px; text-transform: uppercase; }
-        
-        .instruction { font-style: italic; color: #C5A059; margin-bottom: 30px; font-size: 0.95em; line-height: 1.6; max-width: 500px; letter-spacing: 0.5px; }
-        
-        #card-container { width: 300px; height: 533px; perspective: 1000px; margin-bottom: 30px; position: relative; }
-        #card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        #card.flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); background-size: cover; background-position: center; }
-        .card-back { background-image: url('back.jpg'); }
-        .card-front { transform: rotateY(180deg); background-image: url(''); }
+        :root {
+            --gold: #d4af37;
+            --white: #f5f5f5;
+            --dark: #050508;
+        }
 
-        .btn { margin-top: 10px; padding: 15px 30px; background: transparent; border: 2px solid var(--gold); color: var(--gold); font-family: 'Cinzel', serif; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85em; }
-        .btn:hover { background: var(--gold); color: var(--dark); }
-        
-        #draw-btn { margin-top: 20px; }
-        
-        .about-section { max-width: 600px; margin-top: 60px; line-height: 1.8; color: #AAA; font-size: 0.85em; border-top: 1px solid #222; padding-top: 40px; }
-        
-        .social-links { margin-top: 30px; display: flex; gap: 25px; align-items: center; justify-content: center; }
-        .social-links a { color: white; font-size: 1.5em; transition: 0.3s; text-decoration: none; }
-        .social-links a:hover { color: var(--gold); transform: translateY(-3px); }
-        .payhip-icon { font-weight: bold; font-family: 'Cinzel', serif; font-size: 0.85em !important; border: 1.5px solid white; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; }
-        .payhip-icon:hover { border-color: var(--gold); }
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; min-height: 100vh;
+            font-family: 'Georgia', serif;
+            background-color: var(--dark);
+            color: var(--white);
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-        .reset-link { color: #666; font-size: 0.75em; text-decoration: none; margin-top: 25px; display: block; letter-spacing: 2px; text-transform: uppercase; }
-        .reset-link:hover { color: var(--gold); }
+        /* Mysterious Background */
+        .night-sky {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1b2735 0%, #050508 100%);
+            z-index: -1;
+        }
+
+        .shooting-star {
+            position: absolute; width: 150px; height: 2px;
+            background: linear-gradient(-45deg, rgba(95, 145, 255, 1), rgba(0, 0, 255, 0));
+            filter: drop-shadow(0 0 6px #699bff);
+            animation: shoot 4s linear infinite; opacity: 0;
+        }
+
+        @keyframes shoot {
+            0% { transform: translateX(200px) translateY(-200px) rotate(215deg); opacity: 1; }
+            20% { opacity: 0; }
+            100% { transform: translateX(-800px) translateY(800px) rotate(215deg); opacity: 0; }
+        }
+
+        header { margin-top: 40px; text-align: center; z-index: 10; padding: 0 20px; }
+        .brand-name { font-size: 2.5rem; color: var(--gold); letter-spacing: 4px; margin-bottom: 10px; }
+        .intro-text { max-width: 600px; color: rgba(245, 245, 245, 0.8); line-height: 1.6; }
+
+        /* Card System */
+        .card-container { perspective: 1000px; margin: 30px 0; cursor: pointer; }
+        .card {
+            width: 260px; height: 420px; position: relative;
+            transform-style: preserve-3d; transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card.flipped { transform: rotateY(180deg); }
+        .card-face {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 15px;
+            border: 2px solid var(--gold); overflow: hidden;
+        }
+        .card-back { background: #16213e; display: flex; align-items: center; justify-content: center; }
+        .card-back img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .card-front {
+            background: white; color: #222; transform: rotateY(180deg);
+            display: flex; flex-direction: column; align-items: center; padding: 10px;
+        }
+        .card-front img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+
+        /* Action Message Box */
+        #action-container {
+            max-width: 600px; width: 90%; margin: 20px auto;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 30px; border-radius: 15px;
+            display: none; animation: fadeIn 1.5s ease;
+        }
+        .action-title { color: var(--gold); font-size: 1.4rem; margin-bottom: 15px; text-align: center; }
+        .action-body { line-height: 1.8; font-style: italic; color: #eee; text-align: center; }
+
+        .btn {
+            display: inline-block; padding: 12px 35px; border: 1px solid var(--gold);
+            background: transparent; color: var(--gold); text-decoration: none;
+            border-radius: 50px; transition: 0.4s; margin: 20px 0; font-weight: bold;
+        }
+        .btn:hover { background: var(--gold); color: var(--dark); box-shadow: 0 0 15px var(--gold); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <h1>EarthSign Oracles</h1>
-    <div class="instruction">Close your eyes... take a deep grounding breath, and focus on your question. When you feel a connection, draw the card that calls to your soul.</div>
+    <div class="night-sky">
+        <div class="shooting-star" style="top: 10%; left: 80%; animation-delay: 0s;"></div>
+        <div class="shooting-star" style="top: 30%; left: 40%; animation-delay: 2s;"></div>
+    </div>
 
-    <div id="card-container">
-        <div id="card">
-            <div class="card-face card-back"></div>
-            <div class="card-face card-front" id="cardFront"></div>
+    <header>
+        <div class="brand-name">EarthSign.Oracles</div>
+        <div class="intro-text">
+            Welcome to our <strong>FREE card drawing</strong>! ✨<br>
+            The divine messenger you draw today is from our <strong>Daily Oracles Collection</strong>.
+        </div>
+    </header>
+
+    <div class="card-container" onclick="drawCard()">
+        <div class="card" id="oracleCard">
+            <div class="card-face card-back">
+                <img src="back.jpg" alt="Spirit Card Back">
+            </div>
+            <div class="card-face card-front">
+                <img id="resultImg" src="" alt="Spirit Guide">
+            </div>
         </div>
     </div>
 
-    <button id="draw-btn" class="btn" onclick="drawCard()">Receive My Daily Message</button>
-    
-    <div id="action-area" style="display:none;">
-        <p style="color:var(--gold); font-size: 1.1em;">The Universe has spoken.</p>
-        <a href="https://payhip.com/EarthSignOracles" target="_blank" class="btn">Explore The Collection</a><br>
-        <a href="#" onclick="location.reload()" class="reset-link">✦ Draw Again ✦</a>
-    </div>
-
-    <div class="about-section">
-        <p>EarthSign Oracles is a sanctuary where ancient nature wisdom meets cosmic guidance. Every animal that appears is a reflection of your current energy.</p>
-        
-        <div class="social-links">
-            <a href="https://www.instagram.com/eathsign.oracles/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.threads.net/@eathsign.oracles" target="_blank" title="Threads"><i class="fab fa-threads"></i></a>
-            <a href="https://payhip.com/EarthSignOracles" target="_blank" title="Shop" class="payhip-icon">SHOP</a>
+    <div id="action-container">
+        <div class="action-title" id="animalNameTitle"></div>
+        <div class="action-body" id="dailyActionText"></div>
+        <div style="text-align:center;">
+            <a id="buyLink" href="#" class="btn">Claim This Spirit Guide Wallpaper</a>
         </div>
     </div>
+
+    <footer style="margin: 40px 0; text-align: center;">
+        <a href="https://yourpayhipstore.com" class="btn" style="opacity: 0.8;">Explore All Collections</a>
+    </footer>
 
     <script>
-        function drawCard() {
-            const card = document.getElementById('card');
-            const drawBtn = document.getElementById('draw-btn');
-            
-            if (!card.classList.contains('flipped')) {
-                const num = Math.floor(Math.random() * 32) + 1;
-                document.getElementById('cardFront').style.backgroundImage = `url('card${num}.jpg')`;
-                card.classList.add('flipped');
-                drawBtn.style.display = 'none';
-                document.getElementById('action-area').style.display = 'block';
+        const animals = {
+            1: {
+                name: "Dog",
+                action: "Daily Action: Awakening the Light Within<br><br>Find a peaceful moment to stand before a mirror. Close your eyes for a heartbeat, place your hand over your heart, and feel the beautiful rhythm of your life.<br><br>Gently open your eyes and gaze upon yourself with the pure, radiant love of the Divine. See yourself as a masterpiece of light. Speak these words softly to your reflection: 'I cherish you. You are a gift to this world, and I promise to walk beside you with kindness, honoring every part of your beautiful journey.'<br><br>Let a warm, soulful smile bloom on your face. Offer yourself a blessing of gratitude for the goodness within you. Carry this golden glow in your heart, knowing you are deeply loved and never alone.",
+                link: "https://payhip.com/b/DOG_LINK"
+            },
+            2: {
+                name: "Hedgehog",
+                action: "Daily Action: Setting Your Sacred Shield... (Replace with your text)",
+                link: "https://payhip.com/b/HEDGEHOG_LINK"
             }
+            // 請按照此格式增加到 32
+        };
+
+        function drawCard() {
+            const card = document.getElementById('oracleCard');
+            if (card.classList.contains('flipped')) return;
+
+            // 隨機抽 1-32
+            const randomId = Math.floor(Math.random() * 32) + 1;
+            const data = animals[randomId] || { name: "Spirit Guide", action: "Listen to your soul...", link: "#" };
+
+            // 設定內容
+            document.getElementById('resultImg').src = `card${randomId}.jpg`;
+            document.getElementById('animalNameTitle').innerText = `${data.name} Spirit`;
+            document.getElementById('dailyActionText').innerHTML = data.action;
+            document.getElementById('buyLink').href = data.link;
+
+            // 翻牌動畫
+            card.classList.add('flipped');
+
+            // 1秒後顯示文字區塊 (配合翻牌動作)
+            setTimeout(() => {
+                document.getElementById('action-container').style.display = 'block';
+            }, 800);
         }
     </script>
 </body>
