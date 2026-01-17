@@ -8,24 +8,27 @@
     
     <style>
         body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background-color: #020205; /* 極致黑 */
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #020205; 
             font-family: 'Georgia', serif;
             color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* 1. 魔法星雲背景 */
+        /* --- BACKGROUND EFFECTS --- */
         .galaxy-bg {
             position: fixed;
             top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            width: 100vw;
+            height: 100vh;
             background: 
                 radial-gradient(circle at 20% 30%, rgba(40, 20, 80, 0.6) 0%, transparent 40%),
                 radial-gradient(circle at 80% 70%, rgba(20, 50, 90, 0.5) 0%, transparent 40%),
                 radial-gradient(circle at 50% 50%, #050508 0%, #020205 100%);
-            z-index: -10; /* 最底層 */
+            z-index: -2;
             filter: blur(30px);
             animation: nebulaFlow 20s ease-in-out infinite alternate;
         }
@@ -35,128 +38,378 @@
             to { transform: scale(1.1) rotate(2deg); }
         }
 
-        /* 2. 繁星容器 - 確保 z-index 在背景之上 */
-        #starsBox {
+        .stars-container {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -5; /* 高於背景，低於內容 */
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
             pointer-events: none;
         }
 
         .star {
             position: absolute;
-            background: #ffffff;
+            background: white;
             border-radius: 50%;
-            box-shadow: 0 0 5px #fff, 0 0 10px #fff; /* 增加發光感 */
+            opacity: 0.5;
             animation: twinkle var(--duration) infinite ease-in-out;
         }
 
-        .dust {
-            position: absolute;
-            background: rgba(212, 175, 55, 0.6); /* 加深金色星塵 */
-            border-radius: 50%;
-        }
-
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px #fff; }
         }
 
-        /* 3. 內容排版區 */
-        .content-wrapper {
+        /* --- LAYOUT & TYPOGRAPHY --- */
+        .content {
             position: relative;
             z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
             text-align: center;
-            padding: 40px 20px;
+            padding: 6vh 20px;
         }
 
         .brand-name {
             font-family: 'Philosopher', serif;
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: #ffffff;
-            margin-bottom: 35px;
+            margin-bottom: 20px;
             letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            cursor: pointer; /* Click to restart */
         }
 
-        .welcome-box {
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px 30px;
-            border-radius: 25px;
+        /* --- GLASS BOX STYLING --- */
+        .glass-box {
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             line-height: 1.8;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
         }
 
-        .shop-link {
-            display: inline-block;
-            margin-top: 25px;
+        .glass-box h2 {
+            font-family: 'Philosopher', serif;
+            font-size: 1.8rem;
             color: #ffffff;
-            text-decoration: none;
-            border-bottom: 1px solid #fff;
-            padding-bottom: 3px;
+            margin-top: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
+        .card-content {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .resonance-msg {
+            font-style: italic;
+            font-size: 0.95rem;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 2px solid rgba(212, 175, 55, 0.7);
+        }
+
+        /* --- BUTTONS --- */
+        .action-btn {
+            display: inline-block;
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff; /* White Border */
+            padding: 12px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn:hover {
+            background: #ffffff;
+            color: #020205; /* Black text on white bg */
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+        }
+
+        /* --- STATES (Hidden/Visible) --- */
+        .hidden { display: none; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Adjustments */
         @media (max-width: 480px) {
             .brand-name { font-size: 2.2rem; }
-            .welcome-box { font-size: 1rem; }
+            .glass-box { padding: 25px 20px; width: 90%; }
+            .action-btn { width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
 <body>
 
     <div class="galaxy-bg"></div>
-    <div id="starsBox"></div> <div class="content-wrapper">
-        <h1 class="brand-name">EarthSign.Oracles</h1>
+    <div class="stars-container" id="starsBox"></div>
+
+    <div class="content">
+        <h1 class="brand-name" onclick="location.reload()">EarthSign.Oracles</h1>
         
-        <div class="welcome-box">
-            Welcome to our <strong>FREE card drawing</strong>!<br><br>
-            For this card drawing, the collection that you are seeing is the <strong>Daily Oracles Collection</strong>. <br><br>
-            There's more collection on my website, feel free to go to my shop and have a look below.
-            <br>
-            <a href="https://payhip.com/YOUR_SHOP_LINK" class="shop-link">Visit My Shop ✨</a>
+        <div id="welcome-screen" class="glass-box">
+            <h2>✨ Welcome to Our Free Card Drawing ✨</h2>
+            <p>We are delighted to have you here! Today, you are exploring our <strong>Daily Oracles Collection</strong>. May the message you receive bring clarity and peace to your journey.</p>
+            <p>Close your eyes, take a deep breath, and set your intention.</p>
+            <button class="action-btn" onclick="drawCard()">Draw a Card ✨</button>
+            
+            <div style="margin-top:20px; font-size: 0.9rem; opacity: 0.8;">
+                <p>If you feel a connection to this energy, you can support us by exploring our full <strong>Oracle Wallpaper Collections</strong>.</p>
+            </div>
+        </div>
+
+        <div id="loading-screen" class="glass-box hidden">
+            <h2>Shuffling the Stars...</h2>
+            <p>Consulting the universe for your message...</p>
+        </div>
+
+        <div id="result-screen" class="glass-box hidden">
+            <h2 id="card-title">Card Title</h2>
+            
+            <div id="card-body" class="card-content"></div>
+
+            <div class="resonance-msg">
+                If this message resonated with you, consider carrying that light with you through the matching wallpaper. It’s a gentle way to anchor your intentions, and your support truly means the world to me, it gives me the space to keep dreaming and creating for this beautiful community.<br><br>
+                Love grows when shared! If you feel inspired, please share this FREE Oracle Card Drawing with your loved ones to spread the light.
+            </div>
+
+            <a id="shop-link-btn" href="#" target="_blank" class="action-btn">Visit My Shop ✨</a>
+            
+            <br><br>
+            <button onclick="location.reload()" style="background:none; border:none; color:rgba(255,255,255,0.6); text-decoration:underline; cursor:pointer;">Draw Another Card</button>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const starsBox = document.getElementById('starsBox');
-            
-            // 生成 100 顆閃爍白色繁星
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                const size = Math.random() * 3 + 1; // 稍微調大一點確保看得到
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-                star.style.animationDelay = Math.random() * 5 + 's';
-                starsBox.appendChild(star);
-            }
+        // --- STAR BACKGROUND LOGIC ---
+        const starsBox = document.getElementById('starsBox');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            star.style.animationDelay = Math.random() * 5 + 's';
+            starsBox.appendChild(star);
+        }
 
-            // 生成 50 顆金色星塵
-            for (let i = 0; i < 50; i++) {
-                const dust = document.createElement('div');
-                dust.className = 'dust';
-                const size = Math.random() * 2;
-                dust.style.width = size + 'px';
-                dust.style.height = size + 'px';
-                dust.style.top = Math.random() * 100 + '%';
-                dust.style.left = Math.random() * 100 + '%';
-                starsBox.appendChild(dust);
+        // --- CARD DATA (32 Cards) ---
+        const cards = [
+            {
+                title: "Daily Action: Awakening the Light Within",
+                text: `Find a peaceful moment to stand before a mirror. Close your eyes for a heartbeat, place your hand over your heart, and feel the beautiful rhythm of your life.<br><br>Gently open your eyes and gaze upon yourself with the pure, radiant love of the Divine. See yourself as a masterpiece of light. Speak these words softly to your reflection: "I cherish you. You are a gift to this world, and I promise to walk beside you with kindness, honoring every part of your beautiful journey."<br><br>Let a warm, soulful smile bloom on your face. Offer yourself a blessing of gratitude for the goodness within you. Carry this golden glow in your heart, knowing you are deeply loved and never alone.`,
+                link: "https://payhip.com/b/h1Pbw"
+            },
+            {
+                title: "Daily Action: Honoring Your Sacred Space",
+                text: `Take a moment to center yourself in a space of peace. Place your hands over your heart and feel the gentle strength that resides within you. Visualize a soft, golden circle of light surrounding you, keeping your energy pure and vibrant.<br><br>With a heart full of self-respect, choose one thing today that no longer serves your highest good. Gently and firmly say "no" to this drain on your energy. As you do, feel your inner light grow brighter and more stable.`,
+                link: "https://payhip.com/b/yamlz"
+            },
+            {
+                title: "Daily Action: Claiming Your Inner Crown",
+                text: `Find a quiet space where you can feel the earth beneath your feet. Stand tall and graceful, reaching your crown toward the sky, just like the magnificent antlers of the Stag.<br><br>For two beautiful minutes, breathe deeply and let your heart expand. Feel the strength flowing through your spine. As you stand in this powerful stillness, look back at your journey with love and whisper to yourself: "I am proud of how far I have come. My strength is a gift, and I honor the light I carry." Acknowledge every victory, no matter how small, and feel your inner light shining like a golden halo above you.`,
+                link: "https://payhip.com/b/YCdhR"
+            },
+            {
+                title: "Daily Action: Drinking from the Inner Well",
+                text: `Find a peaceful moment to sit quietly and turn your awareness inward. Close your eyes and imagine your heart as a vast, beautiful oasis.<br><br>Take a slow, deep breath, imagining you are drawing in pure, refreshing light to recharge your spirit. As you breathe, check in with your heart and ask: "What does my soul need to feel nourished today?" Acknowledge the incredible resources you already carry within you. Speak softly to your spirit: "I have everything I need. My inner well is overflowing with strength, and I am beautifully prepared for every step of my journey."`,
+                link: "https://payhip.com/b/B9d2O"
+            },
+            {
+                title: "Daily Action: Dancing with the Unknown",
+                text: `Today, invite the spirit of adventure into your heart. As you move through your world, choose a new path—perhaps a different street, a new song, or a fresh way of doing a simple task.<br><br>As you step onto this new trail, feel the wind of possibility on your face. Smile and say to the universe: "I trust the wisdom of my heart. I am free to explore, free to grow, and free to follow the light of my own unique journey." Notice the beauty in the unexpected, and feel the exhilarating spark of joy that comes from simply being yourself.`,
+                link: "https://payhip.com/b/xeCLN"
+            },
+            {
+                title: "Daily Action: A Feast of Gentle Love",
+                text: `Create a quiet space to honor the physical home of your soul. Prepare a meal full of life or a warm drink that feels like a hug for your spirit.<br><br>As you prepare it, infuse every movement with love and intention. When you take your first sip or bite, close your eyes and feel the warmth spreading through you. Softly whisper to your body: "I cherish you. I nourish you with kindness, and I am grateful for the beautiful way you carry me through this life." Let this act of self-care be a prayer of gentleness that radiates from your heart to everyone you meet.`,
+                link: "https://payhip.com/b/aFPY7"
+            },
+            {
+                title: "Daily Action: Sharing a Smile with the Universe",
+                text: `Today, invite the beautiful energy of playfulness into your world. Look around you with a curious and happy heart, seeking out a moment of pure, sparkling joy.<br><br>When you find something that makes you laugh or brings a bright smile to your face, let that laughter flow freely. Feel the vibration of joy dancing in your chest, clearing away any heavy thoughts. Softly say to yourself: "My heart is light, and my spirit is bright. I choose to embrace the joy in every moment, and I let my laughter be a blessing to the world." Allow that golden spark of humor to stay with you, keeping your step bouncy and your heart full of sunshine.`,
+                link: "https://payhip.com/b/YLGOR"
+            },
+            {
+                title: "Daily Action: Entering the Sanctuary of Stillness",
+                text: `Today, give yourself the precious gift of fifteen minutes to simply be. Find a cozy, quiet place where you feel safe and held. Close your eyes and let your body settle into the earth, as if you are resting in a warm, protective embrace.<br><br>Release the need to achieve or do anything at all. Instead, just breathe and listen to the soft whisper of your own heart. In this beautiful silence, say to your soul: "I give myself permission to rest. I trust the peace of this moment, and I allow my spirit to be renewed by the quiet light within." As you return to your day, carry a piece of this stillness with you, feeling centered, refreshed, and deeply loved.`,
+                link: "https://payhip.com/b/RS2PQ"
+            },
+            {
+                title: "Daily Action: Awakening Your Inner Compass",
+                text: `Find a quiet, comfortable space where you can sit in soft stillness. Close your eyes and let your breath become as rhythmic and peaceful as a purr.<br><br>For five beautiful minutes, turn your focus away from the outside world and listen to the gentle melody of your soul. Do not look for loud answers; simply be present with the warm, quiet feelings in your heart. Softly whisper to your inner self: "I trust my inner vision. I am guided by love, and I honor the wisdom that flows through me." As you open your eyes, feel a sense of calm confidence, knowing your soul is always showing you the most beautiful path.`,
+                link: "https://payhip.com/b/ln9m6"
+            },
+            {
+                title: "Daily Action: Creating Ripples of Love",
+                text: `Take a moment to think of someone whose presence brings a smile to your soul. Imagine a golden thread of light connecting your heart to theirs, filled with warmth and kindness.<br><br>Follow that joyful impulse and reach out to them—send a quick note, a sweet message, or a simple "hello" just to let them know they are cherished. As you do, feel your own heart expand with the happiness of connection. Softly say to yourself: "I am a source of love and light. I celebrate the beautiful bonds that unite us, and I find pure joy in the rhythm of our shared journey."`,
+                link: "https://payhip.com/b/ln9m6"
+            },
+            {
+                title: "Daily Action: Singing with the Soul of the World",
+                text: `Find a comfortable space to relax and close your eyes. Allow yourself to be bathed in the soothing sounds of the ocean or music that moves your spirit like a gentle tide.<br><br>As the sounds wash over you, imagine your heart expanding until it is as wide and deep as the sea. Feel the vibration of the music harmonizing with your own inner light. Softly say to yourself: "I am one with the rhythm of life. I trust the deep wisdom within me, and I allow my soul's song to flow with peace, love, and grace." Stay in this beautiful flow for a few moments, feeling completely supported by the infinite embrace of the universe.`,
+                link: "https://payhip.com/b/gUnS8"
+            },
+            {
+                title: "Daily Action: Harmonizing with the Rhythm of Grace",
+                text: `Today, whenever you feel the world moving a little too fast, simply pause and find your center. Place your hand gently on your heart and invite the peaceful energy of the Turtle to sit with you.<br><br>Take three slow, deep breaths, feeling the air move like a gentle, warm wave through your body. With each breath, release any sense of hurry and replace it with a feeling of deep peace. Softly say to your soul: "I trust in the perfect timing of my life. I am exactly where I need to be, and I move forward with ease, love, and a quiet heart." Feel the strength that comes from moving slowly and intentionally, knowing that the universe is supporting your journey every step of the way.`,
+                link: "https://payhip.com/b/vUpat"
+            },
+            {
+                title: "Daily Action: Dancing in the Flow of Life",
+                text: `Take a moment to breathe deeply and feel the lightness within your spirit. Identify one situation or outcome that you have been holding onto with tight hands and a heavy heart.<br><br>Visualize yourself gently opening your palms and letting that concern float away like a bubble into a sparkling sea. As you release it, feel your body become light and relaxed. Softly whisper to the universe: "I trust the flow of life. I release all worry and allow the current of love to carry me exactly where I am meant to be. I am safe, I am supported, and I am free." Spend the rest of your day moving with a gentle heart, trusting that everything is unfolding beautifully for you.`,
+                link: "https://payhip.com/b/rD62z"
+            },
+            {
+                title: "Daily Action: Harmonizing with the Circle of Light",
+                text: `Take a moment to center yourself and visualize a bright, golden circle of hearts surrounding you. Feel the steady pulse of love that connects you to every living being. You are a vital, cherished part of this great family.<br><br>Today, celebrate this connection by weaving a new thread of kindness. Sincerely thank someone who has brightened your path, or offer a helping hand to someone nearby. As you share this moment, softly say to your heart: "I am never alone. I belong to a beautiful circle of light, and I find great joy in supporting and being supported by my fellow travelers." Feel the glow of belonging filling your spirit, making you feel safe, loved, and deeply purposeful.`,
+                link: "https://payhip.com/b/1bGxk"
+            },
+            {
+                title: "Daily Action: Awakening Your Creative Magic",
+                text: `Take a deep breath and feel the spark of infinite potential glowing in your mind. Think of a small task or a tiny puzzle in your day—something that usually feels routine or fixed.<br><br>Instead of following the old path, invite your inner artist to play. Approach this task in a brand-new, joyful way—perhaps with a song, a different tool, or a fresh perspective. As you embrace this new method, smile and say to yourself: "I am a fountain of endless creativity. I flow with ease through every change, and I trust my heart to find the most beautiful way forward." Feel the excitement of your own genius as you unlock a world of bright new horizons.`,
+                link: "https://payhip.com/b/fgOHw"
+            },
+            {
+                title: "Daily Action: Cradled in Infinite Love",
+                text: `Find a cozy space where you can feel completely relaxed and at peace. Close your eyes and imagine the universe as a vast, warm ocean of golden light that gently carries you.<br><br>Wrap your arms around yourself in a tender, meaningful hug, or settle under the comforting weight of a blanket. As you feel this physical embrace, let your heart soften and whisper to your soul: "I am safe. I am cherished. I am held in the loving arms of the universe at all times." Breathe into this feeling of absolute security, allowing every muscle to relax as you bask in the glow of being perfectly cared for.`,
+                link: "https://payhip.com/b/TBCzl"
+            },
+            {
+                title: "Daily Action: Rising Toward Your Highest Light",
+                text: `Take a moment to breathe deeply and feel your spirit expanding, growing as vast and powerful as the sky. Imagine yourself lifting gently above the busy thoughts of the day, looking down with a heart full of peace and a mind as clear as crystal.<br><br>With this beautiful clarity, look toward the horizon of your life. Identify one bright dream or a long-term goal that makes your soul sing. Write it down on a piece of paper, seeing it not as a task, but as a sacred destination. As you write, say to the universe: "I see my path with perfect clarity. I have the strength to rise, the wisdom to lead, and the vision to create a future filled with joy and light."`,
+                link: "https://payhip.com/b/USHpt"
+            },
+            {
+                title: "Daily Action: Emerging into the Light",
+                text: `Find a quiet space to sit in soft reflection. Imagine yourself wrapped in a cocoon of warm, protective light—a safe place for your spirit to grow and change.<br><br>With a heart full of self-love, identify one old habit or pattern that no longer reflects the beautiful person you are becoming. Visualize yourself gently stepping out of that old shell, feeling lighter and more radiant with every breath. As you release this habit, whisper to your soul: "I embrace my beautiful transformation. I am growing, I am glowing, and I have the courage to fly into a bright and joyful new day." Feel the excitement of your new wings as they begin to catch the breeze of possibility.`,
+                link: "https://payhip.com/b/5LOuJ"
+            },
+            {
+                title: "Daily Action: Bathed in the Light of Observation",
+                text: `Seek out a peaceful corner of the natural world—perhaps a garden, a park, or even a window where the sky is visible. Put away all distractions and simply allow your eyes to rest on the beauty of life unfolding around you.<br><br>Watch the way the light dances on the grass or how the clouds drift with effortless grace. As you observe in total stillness, feel your own inner clarity sharpening. Softly say to your spirit: "I am a witness to the wonder of life. In my stillness, I find deep wisdom. I see clearly, I act with grace, and I am at peace with all that is." Carry this crystal-clear awareness with you like a lantern as you move through your evening.`,
+                link: "https://payhip.com/b/9KEvY"
+            },
+            {
+                title: "Daily Action: Tasting the Nectar of the Now",
+                text: `Before your next meal or snack, take a moment to pause and offer a silent blessing of gratitude for the nourishment before you. Imagine the sun, the earth, and the rain that helped create this gift of life.<br><br>As you take your first bite, slow down and let your senses fully awaken. Notice the beautiful textures, the rich colors, and the symphony of flavors dancing on your tongue. For this moment, let everything else fade away as you focus solely on the joy of the present. Softly say to your spirit: "I am fully present in this beautiful moment. I find magic in the simple things, and I nourish my soul with the sweetness of life."`,
+                link: "https://payhip.com/b/KRx0d"
+            },
+            {
+                title: "Daily Action: Embodying the Light of Grace",
+                text: `Today, invite your body to join in a beautiful dance with your spirit. Find a few moments to move in a way that feels like a celebration of your own existence.<br><br>Whether you choose to stretch toward the sky like a blooming flower, dance to a song that touches your heart, or take a slow, mindful walk, do so with a sense of gentle majesty. Feel the fluid connection between your breath and your movement. Softly say to yourself: "I am a being of light and grace. My peace is my power, and as I move with love, I radiate beauty to everyone and everything around me." Allow this feeling of effortless flow to stay with you, making your entire day feel like a beautiful, unfolding poem.`,
+                link: "https://payhip.com/b/ny4oD"
+            },
+            {
+                title: "Daily Action: Shining Your Soul’s True Colors",
+                text: `Today, invite your inner light to express itself through your outward world. Choose an item of clothing, a piece of jewelry, or a bright accessory that makes your heart feel joyful and uniquely "you."<br><br>As you put it on, look in the mirror and offer yourself a smile of pure appreciation. Feel the warmth of your own confidence rising like a sunrise. Softly say to your spirit: "I am a radiant expression of life. I love and honor the person I am, and I share my light with the world without hesitation. My true colors are a gift, and I wear them with joy and grace." Walk through your day with your head held high, knowing that your authenticity is a blessing to everyone you meet.`,
+                link: "https://payhip.com/b/SK4My"
+            },
+            {
+                title: "Daily Action: Weaving Words of Gold",
+                text: `Today, carry the awareness that your voice has the power to brighten the world. Look for a beautiful quality in someone you encounter—perhaps a colleague's helpful spirit or a stranger's warm smile.<br><br>With a heart full of sincerity, offer them a genuine compliment. Watch how your kind words act like a spark of sunshine in their day. As you share this gift, softly say to yourself: "My words are a blessing. I choose to speak with love, to lift others up, and to fill the world with beautiful echoes of kindness. Every word I speak creates more harmony in my life." Feel the joy returning to you, knowing that by speaking light into the world, you are filling your own life with radiance.`,
+                link: "https://payhip.com/b/mQrph"
+            },
+            {
+                title: "Daily Action: Illuminating the Hidden Light",
+                text: `Today, if you encounter a situation that feels like a shadow, pause and take a slow, peaceful breath. Imagine yourself as the Dragonfly, rising slightly above the moment to see it from a new, golden perspective.<br><br>Gently ask yourself: "What beautiful lesson or hidden gift is this moment offering me?" Find one positive angle—perhaps it is a chance to grow in patience, an opportunity to show kindness, or a quiet moment to trust the universe. Softly say to your heart: "I see the light in all things. I am flexible, I am wise, and I choose to focus on the beauty that is unfolding. Every challenge is a stepping stone to greater joy."`,
+                link: "https://payhip.com/b/lMcfL"
+            },
+            {
+                title: "Daily Action: The Sacred Pause of Wisdom",
+                text: `Today, whenever a moment calls for your response—whether it is a message, a conversation, or a sudden change—invite the quiet energy of the Fox to sit beside you.<br><br>Instead of reacting instantly, take one slow, nourishing breath. In that tiny space of stillness, listen to the whisper of your heart. Ask yourself: "What is the most loving and wise way to proceed?" As you find your answer, softly say to yourself: "I am calm, I am clear, and I am wise. I trust my inner guidance to show me the perfect path. By choosing peace over haste, I act with grace and create harmony in my world."`,
+                link: "https://payhip.com/b/x7PHj"
+            },
+            {
+                title: "Daily Action: Grounding in the Earth’s Embrace",
+                text: `Today, find a quiet moment to reconnect with the physical beauty of our world. Step onto the cool, emerald grass with your bare feet, or place your palms gently against the trunk of a wise old tree.<br><br>As you make this contact, feel the steady, ancient energy of the earth rising to meet you. Imagine any heavy thoughts melting away into the ground, replaced by a sense of profound peace and stability. Softly say to your soul: "I am a sensitive and beautiful child of the earth. I honor my feelings as sacred guides, and I stand strong in my gentleness. I am grounded, I am safe, and I am deeply connected to the harmony of life."`,
+                link: "https://payhip.com/b/GsUDp"
+            },
+            {
+                title: "Daily Action: The Leap of Faith",
+                text: `Today, identify one small action that feels a little bit brave—perhaps making a phone call you’ve put off, sharing a new idea, or trying a new activity. See this not as a "fear," but as an invitation to grow your wings.`,
+                link: "https://payhip.com/b/Ecfxg"
+            },
+            {
+                title: "Daily Action: Celebrating the Harvest of the Heart",
+                text: `Today, take a moment to sit in the golden glow of your own life. Close your eyes and feel the richness that already exists within and around you.<br><br>Identify three things—whether they are grand blessings or tiny, sweet moments—that you are profoundly grateful for today. As you name them, feel your heart expand with warmth. Softly say to the universe: "I live in a world of infinite abundance. I have everything I need, and I am grateful for the overflowing love and light in my life. I am enough, I have enough, and I trust in the constant flow of goodness." Carry this feeling of "plenty" with you, knowing that a grateful heart is a magnet for even more miracles.`,
+                link: "https://payhip.com/b/jCOF1"
+            },
+            {
+                title: "Daily Action: Strengthening the Circle of Love",
+                text: `Today, listen for the "wild song" of your own intuition and let it lead you toward a gesture of kindness for your family or community. It could be as simple as preparing a nourishing meal, offering a listening ear, or helping a neighbor with a task.<br><br>As you perform this act of service, feel the warmth of connection flowing between you and those you help. See yourself as a vital link in a golden chain of support. Softly say to your spirit: "I am a loyal and loving presence in the lives of others. I honor my community, and I share my unique gifts with a generous heart. Together we are strong, and my kindness creates a beautiful harmony for all."`,
+                link: "https://payhip.com/b/bB5Ao"
+            },
+            {
+                title: "Daily Action: Clearing the Path for New Miracles",
+                text: `Today, choose one small area of your physical or digital world to refresh—perhaps a single drawer, your desktop icons, or a corner of your room. As you tidy and declutter, visualize yourself washing away old, tired energy and inviting in a cool breeze of inspiration.<br><br>With every item you clear or organize, feel your own spirit becoming lighter and more focused. See this newly opened space as a beautiful invitation for the universe to fill it with something wonderful. Softly say to your heart: "I embrace the beauty of a fresh start. As I clear my space, I clear my mind. I am ready for the new, the bright, and the joyful. My life is a clean canvas, and I am painting it with love and light."`,
+                link: "https://payhip.com/b/y0hCF"
+            },
+            {
+                title: "Daily Action: Crafting Your Golden Offering",
+                text: `Today, choose one single task—whether it is a project at work, a creative hobby, or a simple household chore. Commit to honoring this task with your undivided attention, letting go of the need to rush or juggle multiple thoughts.<br><br>As you focus, imagine your attention as a warm, golden light shining directly on what you are doing. Feel the peace that comes from being fully immersed in the "now." When the task is complete, take a moment to admire your work. Softly say to your soul: "I find joy in my steady progress. My focus is a gift, and my consistent actions create a life of sweetness and success. I am productive, I am peaceful, and I celebrate the beauty of a job well done."`,
+                link: "https://payhip.com/b/EdZiA"
+            },
+            {
+                title: "Daily Action: Awakening the Eye of Wonder",
+                text: `Today, put on your "spiritual spectacles" and look for the magic that hides in plain sight. Before the sun sets, find a quiet moment to record three miracles that graced your day—perhaps a perfectly timed message from a friend, the breathtaking colors of the sky, or a sudden moment of inner peace.<br><br>As you write them down, feel the sparkle of the universe dancing in your heart. Recognize that these are not coincidences, but love letters from the infinite. Softly say to your spirit: "I believe in the magic within me and around me. My life is a beautiful tapestry of miracles, and I open my heart to the wonders of the unknown. I am a sacred miracle, and today, I choose to see the world with awe and joy."<br><br><strong>✨ Your Special Miracle FREE Gift! ✨</strong><br>Finding this Unicorn Oracle Card is a rare synchronicity, it appeared today just for you! To celebrate this miracle, we want to gift this guide to you for FREE.<br><br><strong>The Code: MIRACLE100</strong><br>How to Claim: Add this card to your cart and apply the code at checkout to receive your miracle gift!<br>The Rule: This "Magic Key" works exclusively for the Unicorn Oracle Card.<br>May the light of the Unicorn guide your path today. 🦄✨`,
+                link: "https://payhip.com/b/ZK4py"
             }
-        });
+        ];
+
+        // --- DRAW CARD LOGIC ---
+        function drawCard() {
+            // 1. Hide Welcome, Show Loading
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+
+            // 2. Wait 2 seconds (simulating shuffle)
+            setTimeout(() => {
+                // 3. Pick random card
+                const randomIndex = Math.floor(Math.random() * cards.length);
+                const selectedCard = cards[randomIndex];
+
+                // 4. Populate Result Screen
+                document.getElementById('card-title').innerText = selectedCard.title;
+                document.getElementById('card-body').innerHTML = selectedCard.text;
+                
+                // Set the link for the button
+                document.getElementById('shop-link-btn').href = selectedCard.link;
+
+                // 5. Hide Loading, Show Result
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('result-screen').classList.remove('hidden');
+            }, 2000);
+        }
     </script>
 </body>
 </html>
