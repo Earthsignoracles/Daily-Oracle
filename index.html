@@ -442,11 +442,16 @@
 
         // --- DRAW CARD LOGIC ---
         function drawCard() {
+            // Play Sound Effect
+            const audio = new Audio('magic.mp3');
+            audio.volume = 0.5; // Sets volume to 50%
+            audio.play().catch(e => console.log("Audio play prevented by browser until user interacts."));
+
             // 1. Hide Welcome, Show Loading
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('loading-screen').classList.remove('hidden');
 
-            // 2. Wait 3.5 seconds (simulating shuffle/animation)
+            // 2. Wait 2 seconds (simulating shuffle/animation)
             setTimeout(() => {
                 // 3. Pick random card
                 const randomIndex = Math.floor(Math.random() * cards.length);
@@ -467,7 +472,7 @@
                 // 5. Hide Loading, Show Result
                 document.getElementById('loading-screen').classList.add('hidden');
                 document.getElementById('result-screen').classList.remove('hidden');
-            }, 2000); // 2000ms = 3.5 seconds
+            }, 2000); 
         }
     </script>
 </body>
