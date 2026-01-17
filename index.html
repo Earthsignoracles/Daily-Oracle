@@ -81,7 +81,7 @@
             margin-bottom: 20px;
             letter-spacing: 2px;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-            cursor: pointer; /* Click to restart */
+            cursor: pointer;
         }
 
         /* --- GLASS BOX STYLING --- */
@@ -96,8 +96,30 @@
             line-height: 1.8;
             font-size: 1.1rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
+            margin-bottom: 50px; /* Space at bottom for scrolling */
             animation: fadeIn 1s ease;
+        }
+
+        /* --- CARD IMAGES --- */
+        .card-display {
+            width: 100%;
+            max-width: 320px; /* Adjust card size here */
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+            margin: 0 auto 25px auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        /* The Card Back Animation (Breathing) */
+        .card-back {
+            animation: breathe 4s infinite ease-in-out;
+            cursor: pointer;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
+            50% { transform: scale(1.03); box-shadow: 0 0 35px rgba(255, 255, 255, 0.4); }
         }
 
         .glass-box h2 {
@@ -130,7 +152,7 @@
             display: inline-block;
             background: transparent;
             color: #ffffff;
-            border: 2px solid #ffffff; /* White Border */
+            border: 2px solid #ffffff;
             padding: 12px 35px;
             border-radius: 50px;
             text-decoration: none;
@@ -144,12 +166,12 @@
 
         .action-btn:hover {
             background: #ffffff;
-            color: #020205; /* Black text on white bg */
+            color: #020205;
             transform: translateY(-3px);
             box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
         }
 
-        /* --- STATES (Hidden/Visible) --- */
+        /* --- STATES --- */
         .hidden { display: none; }
         
         @keyframes fadeIn {
@@ -157,11 +179,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile Adjustments */
         @media (max-width: 480px) {
             .brand-name { font-size: 2.2rem; }
             .glass-box { padding: 25px 20px; width: 90%; }
             .action-btn { width: 100%; box-sizing: border-box; }
+            .card-display { max-width: 80%; }
         }
     </style>
 </head>
@@ -174,22 +196,25 @@
         <h1 class="brand-name" onclick="location.reload()">EarthSign.Oracles</h1>
         
         <div id="welcome-screen" class="glass-box">
-            <h2>✨ Welcome to Our Free Card Drawing ✨</h2>
-            <p>We are delighted to have you here! Today, you are exploring our <strong>Daily Oracles Collection</strong>. May the message you receive bring clarity and peace to your journey.</p>
-            <p>Close your eyes, take a deep breath, and set your intention.</p>
-            <button class="action-btn" onclick="drawCard()">Draw a Card ✨</button>
+            <h2>✨ Daily Oracle Card Drawing ✨</h2>
             
-            <div style="margin-top:20px; font-size: 0.9rem; opacity: 0.8;">
-                <p>If you feel a connection to this energy, you can support us by exploring our full <strong>Oracle Wallpaper Collections</strong>.</p>
-            </div>
+            <img src="back.jpg" alt="Oracle Card Deck" class="card-display card-back" onclick="drawCard()">
+
+            <p>We are delighted to have you here! Close your eyes, take a deep breath, and click the card (or the button below) to receive your message.</p>
+            
+            <button class="action-btn" onclick="drawCard()">Draw a Card ✨</button>
         </div>
 
         <div id="loading-screen" class="glass-box hidden">
+            <img src="back.jpg" alt="Shuffling" class="card-display" style="animation: spin 1s infinite linear;">
             <h2>Shuffling the Stars...</h2>
             <p>Consulting the universe for your message...</p>
         </div>
 
         <div id="result-screen" class="glass-box hidden">
+            
+            <img id="result-card-img" src="" alt="Your Card" class="card-display">
+
             <h2 id="card-title">Card Title</h2>
             
             <div id="card-body" class="card-content"></div>
@@ -223,6 +248,7 @@
         }
 
         // --- CARD DATA (32 Cards) ---
+        // Note: The index + 1 corresponds to the image name (e.g., Index 0 = card1.jpg)
         const cards = [
             {
                 title: "Daily Action: Awakening the Light Within",
@@ -392,13 +418,18 @@
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('loading-screen').classList.remove('hidden');
 
-            // 2. Wait 2 seconds (simulating shuffle)
+            // 2. Wait 2 seconds (simulating shuffle/animation)
             setTimeout(() => {
                 // 3. Pick random card
                 const randomIndex = Math.floor(Math.random() * cards.length);
                 const selectedCard = cards[randomIndex];
 
-                // 4. Populate Result Screen
+                // --- NEW IMAGE LOGIC ---
+                // We add 1 to the index because arrays start at 0 but your files start at 1
+                const imageName = 'card' + (randomIndex + 1) + '.jpg';
+                document.getElementById('result-card-img').src = imageName;
+
+                // 4. Populate Result Screen Text
                 document.getElementById('card-title').innerText = selectedCard.title;
                 document.getElementById('card-body').innerHTML = selectedCard.text;
                 
@@ -408,7 +439,7 @@
                 // 5. Hide Loading, Show Result
                 document.getElementById('loading-screen').classList.add('hidden');
                 document.getElementById('result-screen').classList.remove('hidden');
-            }, 2000);
+            }, 2000); // 2000ms = 2 seconds
         }
     </script>
 </body>
