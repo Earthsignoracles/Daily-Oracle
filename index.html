@@ -217,7 +217,24 @@
 
         <div id="loading-screen" class="glass-box hidden">
             <img src="back.jpg" alt="Shuffling" class="card-display" style="animation: spin 1s infinite linear;">
-            <h2>Shuffling the Stars...</h2>
+            <p id="loading-text" style="
+    text-align: center; 
+    font-style: italic; 
+    letter-spacing: 2px; 
+    color: #6a6a6a; 
+    opacity: 0.8;
+    animation: breathe 3s infinite ease-in-out;">
+    Shuffling the Stars...
+</p>
+
+<style>
+/* This makes the text gently fade in and out like a breath */
+@keyframes breathe {
+    0% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+    100% { opacity: 0.4; }
+}
+</style>
             <p>Consulting the universe for your message...</p>
         </div>
 
