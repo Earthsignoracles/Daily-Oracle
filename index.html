@@ -132,40 +132,21 @@
         }
 
         /* --- CARD IMAGES --- */
-        .card-display {
-            width: 100%;
-            max-width: 280px; /* Adjust card size here */
-            border-radius: 15px;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
-            margin: 0 auto 25px auto;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        /* The Card Back Animation (Breathing) */
         .card-back {
-            animation: revealCard 1.2s ease-in-out forwards;
-}
-        
-.card-back:hover {
-    /* A tiny lift when the mouse touches it */
-    transform: scale(1.05);
-}
-        
-@keyframes breathe {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
-    50% { transform: scale(1.03); box-shadow: 0 0 35px rgba(255, 255, 255, 0.4); }
+    animation: breathe 4s infinite ease-in-out; /* Changed from revealCard to breathe */
+    cursor: pointer;
 }
 
 /* --- THE RESULT REVEAL (Physical Feel) --- */
 .card-reveal-physical {
+    /* No transparency, just a solid slide-up and scale-in */
     animation: revealCard 1.2s ease-in-out forwards;
 }
 
 @keyframes revealCard {
     0% {
-        transform: scale(0.7) translateY(50px);
-        filter: brightness(0.5);
+        transform: scale(0.8) translateY(80px); /* Starts lower for a stronger "lift" */
+        filter: brightness(0.6); 
     }
     100% {
         transform: scale(1) translateY(0);
@@ -557,24 +538,22 @@ function drawCard() {
         const cardImg = document.getElementById('result-card-img');
         const imageName = 'card' + (randomIndex + 1) + '.jpg';
         
-        // Set the image source
+        // 1. Set the image and text
         cardImg.src = imageName;
-
-        // Reset the animation class so it plays every time
-        cardImg.classList.remove('card-reveal-physical');
-        void cardImg.offsetWidth; // This "magic" line triggers the reset
-        cardImg.classList.add('card-reveal-physical');
-
-        // Populate Result Screen Text
         document.getElementById('card-title').innerText = selectedCard.title;
         document.getElementById('card-body').innerHTML = selectedCard.text;
         document.getElementById('shop-link-btn').href = selectedCard.link;
 
-        // 4. Hide Loading, Show Result
+        // 2. SHOW THE SCREEN FIRST
         document.getElementById('loading-screen').classList.add('hidden');
         document.getElementById('result-screen').classList.remove('hidden');
 
-    }, 4000); 
+        // 3. TRIGGER ANIMATION AFTER SCREEN IS VISIBLE
+        cardImg.classList.remove('card-reveal-physical');
+        void cardImg.offsetWidth; // Force a refresh
+        cardImg.classList.add('card-reveal-physical');
+
+    }, 4000);
 }
     </script>
 </body>
