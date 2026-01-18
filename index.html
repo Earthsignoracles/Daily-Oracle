@@ -144,14 +144,19 @@
 
         /* The Card Back Animation (Breathing) */
         .card-back {
-            animation: breathe 4s infinite ease-in-out;
-            cursor: pointer;
-        }
-        
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
-            50% { transform: scale(1.03); box-shadow: 0 0 35px rgba(255, 255, 255, 0.4); }
-        }
+            animation: revealCard 1.2s ease-in-out forwards;
+}
+
+@keyframes revealCard {
+    0% {
+        transform: scale(0.7) translateY(50px); /* Starts smaller and lower */
+        filter: brightness(0.5); /* Starts a bit darker like it's in shadow */
+    }
+    100% {
+        transform: scale(1) translateY(0); /* Settles at full size */
+        filter: brightness(1); /* Lights up to full color */
+    }
+}
 
         .glass-box h2 {
             font-family: 'Arial', serif;
