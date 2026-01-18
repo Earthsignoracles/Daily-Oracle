@@ -481,81 +481,86 @@
             }
         ];
 
-        // --- DRAW CARD LOGIC ---
-        function drawCard() {
-            // Play Sound Effect
-            const audio = new Audio('magic.mp3');
-            let startVolume = 0.5; // Starting volume
-            audio.volume = startVolume;
-            audio.play().catch(e => console.log("Audio play prevented."));
+      // --- DRAW CARD LOGIC ---
+function drawCard() {
+    // 1. Play Sound Effect with Fade Out
+    const audio = new Audio('magic.mp3');
+    let startVolume = 0.5; 
+    audio.volume = startVolume;
+    audio.play().catch(e => console.log("Audio play prevented."));
 
-// --- SPARKLE EFFECT START ---
-   for (let i = 0; i < 60; i++) { // Increased to 60 for a richer star field
+    // --- SPARKLE EFFECT START ---
+    for (let i = 0; i < 60; i++) {
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
         
         const angle = Math.random() * Math.PI * 2;
-        const velocity = Math.random() * 400 + 100; // Increased distance for better effect
+        const velocity = Math.random() * 400 + 100; 
         const tx = Math.cos(angle) * velocity + 'px';
         const ty = Math.sin(angle) * velocity + 'px';
         
         sparkle.style.setProperty('--tx', tx);
         sparkle.style.setProperty('--ty', ty);
         
-        // Random star sizes
         const size = Math.random() * 3 + 2; 
         sparkle.style.width = size + 'px';
         sparkle.style.height = size + 'px';
 
         document.body.appendChild(sparkle);
         
-        // Keep them for 6 seconds
+        // Matches the 6-second lingering effect
         setTimeout(() => sparkle.remove(), 6000); 
     }
     // --- SPARKLE EFFECT END ---
-            
-            // --- FADE OUT LOGIC ---
-            const fadePoint = 8000; // Duration of the fade in milliseconds
-            const fadeInterval = 50; // Frequency of volume change
-            const volumeStep = startVolume / (fadePoint / fadeInterval);
+    
+    // --- AUDIO FADE LOGIC ---
+    const fadePoint = 8000; 
+    const fadeInterval = 50; 
+    const volumeStep = startVolume / (fadePoint / fadeInterval);
 
-            const fadeAudio = setInterval(() => {
-                if (audio.volume > volumeStep) {
-                    audio.volume -= volumeStep;
-                } else {
-                    audio.volume = 0;
-                    audio.pause();
-                    clearInterval(fadeAudio);
-                }
-            }, fadeInterval);
-
-            // 1. Hide Welcome, Show Loading
-            document.getElementById('welcome-screen').classList.add('hidden');
-            document.getElementById('loading-screen').classList.remove('hidden');
-
-            // 2. Wait 2 seconds (simulating shuffle/animation)
-            setTimeout(() => {
-                // 3. Pick random card
-                const randomIndex = Math.floor(Math.random() * cards.length);
-                const selectedCard = cards[randomIndex];
-
-                // --- NEW IMAGE LOGIC ---
-                // We add 1 to the index because arrays start at 0 but your files start at 1
-                const imageName = 'card' + (randomIndex + 1) + '.jpg';
-                document.getElementById('result-card-img').src = imageName;
-
-                // 4. Populate Result Screen Text
-                document.getElementById('card-title').innerText = selectedCard.title;
-                document.getElementById('card-body').innerHTML = selectedCard.text;
-                
-                // Set the link for the button
-                document.getElementById('shop-link-btn').href = selectedCard.link;
-
-                // 5. Hide Loading, Show Result
-                document.getElementById('loading-screen').classList.add('hidden');
-                document.getElementById('result-screen').classList.remove('hidden');
-            }, 4000); 
+    const fadeAudio = setInterval(() => {
+        if (audio.volume > volumeStep) {
+            audio.volume -= volumeStep;
+        } else {
+            audio.volume = 0;
+            audio.pause();
+            clearInterval(fadeAudio);
         }
+    }, fadeInterval);
+
+    // 2. Hide Welcome Screen, Show Loading Screen
+    document.getElementById('welcome-screen').classList.add('hidden');
+    document.getElementById('loading-screen').classList.remove('hidden');
+
+    // 3. The Reveal Logic (Wait 4 seconds for shuffle)
+    setTimeout(() => {
+        // Pick random card
+        const randomIndex = Math.floor(Math.random() * cards.length);
+        const selectedCard = cards[randomIndex];
+
+        // --- PHYSICAL CARD REVEAL LOGIC ---
+        const cardImg = document.getElementById('result-card-img');
+        const imageName = 'card' + (randomIndex + 1) + '.jpg';
+        
+        // Set the image source
+        cardImg.src = imageName;
+
+        // Reset the animation class so it plays every time
+        cardImg.classList.remove('card-reveal-physical');
+        void cardImg.offsetWidth; // This "magic" line triggers the reset
+        cardImg.classList.add('card-reveal-physical');
+
+        // Populate Result Screen Text
+        document.getElementById('card-title').innerText = selectedCard.title;
+        document.getElementById('card-body').innerHTML = selectedCard.text;
+        document.getElementById('shop-link-btn').href = selectedCard.link;
+
+        // 4. Hide Loading, Show Result
+        document.getElementById('loading-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+
+    }, 4000); 
+}
     </script>
 </body>
 </html>
