@@ -18,6 +18,26 @@
             overflow-x: hidden;
         }
 
+/* This makes the tiny stars that explode */
+.sparkle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    pointer-events: none; 
+    z-index: 9999;
+    box-shadow: 0 0 10px #ffffff, 0 0 20px #d4af37;
+    animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+        
         /* --- BACKGROUND EFFECTS --- */
         .galaxy-bg {
             position: fixed;
@@ -453,6 +473,32 @@
             audio.volume = startVolume;
             audio.play().catch(e => console.log("Audio play prevented."));
 
+// --- SPARKLE EFFECT START ---
+    for (let i = 0; i < 50; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        
+        // Random direction and distance
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 300 + 100; 
+        const tx = Math.cos(angle) * velocity + 'px';
+        const ty = Math.sin(angle) * velocity + 'px';
+        
+        sparkle.style.setProperty('--tx', tx);
+        sparkle.style.setProperty('--ty', ty);
+        
+        // Random size for each sparkle
+        const size = Math.random() * 4 + 2;
+        sparkle.style.width = size + 'px';
+        sparkle.style.height = size + 'px';
+
+        document.body.appendChild(sparkle);
+        
+        // Remove sparkle after animation finishes (1.5 seconds)
+        setTimeout(() => sparkle.remove(), 1500);
+    }
+    // --- SPARKLE EFFECT END ---
+            
             // --- FADE OUT LOGIC ---
             const fadePoint = 8000; // Duration of the fade in milliseconds
             const fadeInterval = 50; // Frequency of volume change
