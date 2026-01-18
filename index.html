@@ -30,7 +30,7 @@
     pointer-events: none; 
     z-index: 9999;
     box-shadow: 0 0 10px #ffffff, 0 0 20px #d4af37;
-    animation: explode 1.5s ease-out forwards;
+    animation: explode 3s ease-out forwards;
 }
 
 @keyframes explode {
@@ -494,8 +494,8 @@
 
         document.body.appendChild(sparkle);
         
-        // Remove sparkle after animation finishes (1.5 seconds)
-        setTimeout(() => sparkle.remove(), 1500);
+        // Remove sparkle after animation finishes (3 seconds)
+        setTimeout(() => sparkle.remove(), 3000);
     }
     // --- SPARKLE EFFECT END ---
             
