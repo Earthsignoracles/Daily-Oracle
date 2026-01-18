@@ -449,7 +449,7 @@
             audio.play().catch(e => console.log("Audio play prevented."));
 
             // --- FADE OUT LOGIC ---
-            const fadePoint = 500; // Duration of the fade in milliseconds
+            const fadePoint = 8000; // Duration of the fade in milliseconds
             const fadeInterval = 50; // Frequency of volume change
             const volumeStep = startVolume / (fadePoint / fadeInterval);
 
